@@ -27,22 +27,27 @@ Route::view('/', 'home.index')->name('home.index');
 //})->name('home.contact');
 Route::view('/contact', 'home.contact')->name('home.contact');
 
+$posts = [
+    1 => [
+        'title' => 'Intro to Laravel',
+        'content' => 'This is a short intro to Laravel',
+        'is_new' => true,
+        'has_comments' => true,
+    ],
+    2 => [
+        'title' => 'Intro to PHP',
+        'content' => 'This is a short intro to PHP',
+        'is_new' => false,
+    ]
+];
+
+Route::get('/posts', function () use ($posts) {
+    return view('posts.index', ['posts' => $posts]);
+});
+
 /* using route parameters {}, the order is important as they go to function in the same order. /posts is not available
 w/o parameter */
-Route::get('/posts/{id}', function ($id){
-    $posts = [
-        1 => [
-            'title' => 'Intro to Laravel',
-            'content' => 'This is a short intro to Laravel',
-            'is_new' => true,
-            'has_comments' => true,
-        ],
-        2 => [
-            'title' => 'Intro to PHP',
-            'content' => 'This is a short intro to PHP',
-            'is_new' => false,
-        ]
-    ];
+Route::get('/posts/{id}', function ($id) use($posts){
 
     abort_if(!isset($posts[$id]), 404);
 
