@@ -25,7 +25,20 @@ Route::get('/contact', function () {
 /* using route parameters {}, the order is important as they go to function in the same order. /posts is not available
 w/o parameter */
 Route::get('/posts/{id}', function ($id){
-    return 'Blog post' . $id;
+    $posts = [
+        1 => [
+            'title' => 'Intro to Laravel',
+            'content' => 'This is a short intro to Laravel'
+        ],
+        2 => [
+            'title' => 'Intro to PHP',
+            'content' => 'This is a short intro to PHP'
+        ]
+    ];
+
+    abort_if(!isset($posts[$id]), 404);
+
+    return view('posts.show', ['post' => $posts[$id]]);
 })
 //constraining route params ->where(['id' => '\d+']) or as we did add Route::patter('id', /d+)
 // in RouteServiceProvider::class
