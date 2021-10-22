@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 //Naming routes is the best practice
 Route::get('/', function () {
-    return 'Home page';
+    return view('home.index', []);
 })->name('home.index');
 
 Route::get('/contact', function () {
-   return 'Contact';
+   return view('home.contact');
 })->name('home.contact');
 
 /* using route parameters {}, the order is important as they go to function in the same order. /posts is not available
