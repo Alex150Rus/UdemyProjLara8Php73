@@ -38,6 +38,11 @@ $posts = [
         'title' => 'Intro to PHP',
         'content' => 'This is a short intro to PHP',
         'is_new' => false,
+    ],
+    3 => [
+        'title' => 'Intro to Golang',
+        'content' => 'This is a short intro to Golang',
+        'is_new' => false,
     ]
 ];
 
@@ -47,7 +52,7 @@ Route::get('/posts', function () use ($posts) {
 
 /* using route parameters {}, the order is important as they go to function in the same order. /posts is not available
 w/o parameter */
-Route::get('/posts/{id}', function ($id) use($posts){
+Route::get('/posts/{id}', function ($id) use ($posts) {
 
     abort_if(!isset($posts[$id]), 404);
 
@@ -55,7 +60,7 @@ Route::get('/posts/{id}', function ($id) use($posts){
 })
 //constraining route params ->where(['id' => '\d+']) or as we did add Route::patter('id', /d+)
 // in RouteServiceProvider::class
-->name('posts.show');
+    ->name('posts.show');
 
 //using optional parameters {?}. It's better to make default argument in function. /recent-posts is available w/o param
 Route::get('/recent-posts/{days_ago?}', function ($daysAgo = 20) {
