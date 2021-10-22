@@ -13,6 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Naming routes is the best practice
 Route::get('/', function () {
-    return view('welcome');
-});
+    return 'Home page';
+})->name('home.index');
+
+Route::get('/contact', function () {
+   return 'Contact';
+})->name('home.contact');
+
+/* using route parameters {}, the order is important as they go to function in the same order. /posts is not available
+w/o parameter */
+Route::get('/posts/{id}', function ($id){
+    return 'Blog post' . $id;
+})->name('posts.show');
+
+//using optional parameters {?}. It's better to make default argument in function. /recent-posts is available w/o param
+Route::get('/recent-posts/{days_ago?}', function ($daysAgo = 20) {
+    return 'Posts from ' . $daysAgo . ' days ago';
+})->name('posts.recent.index');
