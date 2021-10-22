@@ -47,6 +47,27 @@ $posts = [
 ];
 
 Route::get('/posts', function () use ($posts) {
+    //dd function for dump data, dump and die
+    //dd(request()->all());
+    //dd((int)request()->input('page', 1)); //for query, json, form params
+    dd((int)request()->query('page', 1)); //for query only
+
+    /* $request->boolean('archieved'); true for 1, "1", true, "true", "on" and "yes"
+     * $request->only(['username', 'password'])
+     * $request->only('username', 'password')
+     * $request->except(['credit_card'])
+     * $request->except('credit_card')
+     * if ($request->has('name') {}
+     * if ($request->has(['name', 'email']) {}
+     * $request->whenHas('name', function($input){})
+     * $request->missing('name', function($input){})
+     * if ($request->hasAny(['name', 'email'])){}
+     * if($request->filled('name')) {}
+     * $request -> whenFilled('name', function($input){})
+     *
+    */
+
+
     return view('posts.index', ['posts' => $posts]);
 });
 
