@@ -26,7 +26,10 @@ Route::get('/contact', function () {
 w/o parameter */
 Route::get('/posts/{id}', function ($id){
     return 'Blog post' . $id;
-})->name('posts.show');
+})
+//constraining route params ->where(['id' => '\d+']) or as we did add Route::patter('id', /d+)
+// in RouteServiceProvider::class
+->name('posts.show');
 
 //using optional parameters {?}. It's better to make default argument in function. /recent-posts is available w/o param
 Route::get('/recent-posts/{days_ago?}', function ($daysAgo = 20) {
