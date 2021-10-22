@@ -14,13 +14,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Naming routes is the best practice
-Route::get('/', function () {
-    return view('home.index', []);
-})->name('home.index');
 
-Route::get('/contact', function () {
-   return view('home.contact');
-})->name('home.contact');
+
+//Route::get('/', function () {
+//    return view('home.index', []);
+//})->name('home.index');
+Route::view('/', 'home.index')->name('home.index');
+
+
+//Route::get('/contact', function () {
+//   return view('home.contact');
+//})->name('home.contact');
+Route::view('/contact', 'home.contact')->name('home.contact');
 
 /* using route parameters {}, the order is important as they go to function in the same order. /posts is not available
 w/o parameter */
