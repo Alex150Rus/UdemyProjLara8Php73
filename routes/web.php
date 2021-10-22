@@ -67,7 +67,23 @@ Route::get('/recent-posts/{days_ago?}', function ($daysAgo = 20) {
     return 'Posts from ' . $daysAgo . ' days ago';
 })->name('posts.recent.index');
 
-Route::get('fun/responses', function () use ($posts){
+Route::get('/fun/responses', function () use ($posts){
     return response($posts, 201)->header('Content-Type', 'application/json')
         ->cookie('MY_COOKIE', 'Alex Medvedev', 3600);
+});
+
+Route::get('/fun/redirect', function (){
+    return redirect('/contact');
+});
+
+Route::get('/fun/back', function (){
+    return back();
+});
+
+Route::get('/fun/named-route', function (){
+    return redirect()->route('posts.show', ['id' => 1]);
+});
+
+Route::get('/fun/away', function (){
+    return redirect()->away('https://google.com');
 });
