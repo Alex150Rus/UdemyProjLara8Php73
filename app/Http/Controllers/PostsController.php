@@ -39,10 +39,23 @@ class PostsController extends Controller
     {
         //if errors, then redirects to the page where errors occured and stop code execution
         $validated= $request->validated();
-        $post = new BlogPost();
-        $post->title =  $validated['title'];
-        $post->content =  $validated['content'];
-        $post->save();
+        $post = BlogPost::create($validated);
+//        $post = new BlogPost();
+//        $post->title =  $validated['title'];
+//        $post->content =  $validated['content'];
+//        $post->save();
+
+        //would create a new model instance, fill all properties from input, and try immediately save the model to db.
+        //We do not need call save();
+        //$post2 = BlogPost::create();
+
+        //will create Model, fill the properties, but it would not try to save model to the db. We need to save() when
+        //ready. Use it when the model hase related Model which is not exists yet or we don't have values for all needed
+        //properties yet
+        //$post3 =BlogPost::make();
+
+        //$post->fill([]);
+
         $request->session()->flash('status', 'The blog post was created');
 
         return redirect()->route('posts.show', ['post' => $post->id]);

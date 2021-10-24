@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class BlogPost extends Model
 {
     use HasFactory;
+
+    //properties, which can be assigned during mass assignment
+    protected $fillable = ['title', 'content'];
 }
