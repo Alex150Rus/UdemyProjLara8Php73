@@ -36,6 +36,12 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        //bail - if prefer the first error to stop the rest of the rules from running. All errors are added(flashed) to
+        // session errors var in blade template thanks to Illuminate\View\Middleware\ShareErrorsFromSession:class
+        $request->validate([
+            'title' => 'bail|required|min:5|max:100',
+            'content' => 'required|min:10',
+        ]);
         $post = new BlogPost();
         $post->title = $request->input('title');
         $post->content = $request->input('content');
