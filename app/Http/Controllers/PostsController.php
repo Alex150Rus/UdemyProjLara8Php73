@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
 
@@ -31,20 +32,16 @@ class PostsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StorePost $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(StorePost $request)
     {
-        //bail - if prefer the first error to stop the rest of the rules from running. All errors are added(flashed) to
-        // session errors var in blade template thanks to Illuminate\View\Middleware\ShareErrorsFromSession:class
-        $request->validate([
-            'title' => 'bail|required|min:5|max:100',
-            'content' => 'required|min:10',
-        ]);
+        //if errors, then redirects to the page where errors occured and stop code execution
+        $validated= $request->validated();
         $post = new BlogPost();
-        $post->title = $request->input('title');
-        $post->content = $request->input('content');
+        $post->title =  $validated['title'];
+        $post->content =  $validated['content'];
         $post->save();
 
         return redirect()->route('posts.show', ['post' => $post->id]);
