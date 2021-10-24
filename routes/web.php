@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,13 +21,22 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/', function () {
 //    return view('home.index', []);
 //})->name('home.index');
-Route::view('/', 'home.index')->name('home.index');
+// or
+//Route::view('/', 'home.index')->name('home.index');
+// or
+Route::get('/', [HomeController::class, 'home'])->name('home.index');
+
 
 
 //Route::get('/contact', function () {
 //   return view('home.contact');
 //})->name('home.contact');
-Route::view('/contact', 'home.contact')->name('home.contact');
+// or
+//Route::view('/contact', 'home.contact')->name('home.contact');
+// or
+Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
+
+Route::get('/single', AboutController::class);
 
 $posts = [
     1 => [
