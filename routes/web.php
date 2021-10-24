@@ -86,7 +86,10 @@ Route::get('/posts/{id}', function ($id) use ($posts) {
 //using optional parameters {?}. It's better to make default argument in function. /recent-posts is available w/o param
 Route::get('/recent-posts/{days_ago?}', function ($daysAgo = 20) {
     return 'Posts from ' . $daysAgo . ' days ago';
-})->name('posts.recent.index');
+})->name('posts.recent.index')
+    //из App\Http\Kernel, 'auth' tells that user needs to be authenticated to visit this route, middleware is also
+    //can accept parameters
+    ->middleware('auth');
 
 Route::prefix('/fun')->name('fun.')->group(function() use ($posts){
 
