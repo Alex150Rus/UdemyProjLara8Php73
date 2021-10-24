@@ -59,7 +59,8 @@ $posts = [
 ];
 
 //only - the actions to use, except - the actions not to use
-Route::resource('posts', PostsController::class)->only(['index', 'show']);
+Route::resource('posts', PostsController::class)
+    ->only(['index', 'show', 'create', 'store']);
 
 //Route::get('/posts', function () use ($posts) {
 //    //dd function for dump data, dump and die
