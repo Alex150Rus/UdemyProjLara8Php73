@@ -5,6 +5,7 @@ WORKDIR /var/www
 RUN apk update && apk upgrade && apk add --no-cache \
       $PHPIZE_DEPS \
       build-base \
+      npm\
       zip \
       unzip \
       vim \

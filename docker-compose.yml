@@ -45,6 +45,7 @@ services:
   redis:
     image: redis:latest
     container_name: redisudemylara8php73
+    restart: unless-stopped
 
 
 volumes:
