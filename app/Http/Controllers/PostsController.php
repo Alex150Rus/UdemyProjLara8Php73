@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 
 class PostsController extends Controller
@@ -17,25 +15,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        DB::connection()->enableQueryLog();
-
-        //Eager Loading query qty = 2:
-        //select * from `blog_posts`
-        //select * from `comments` where `comments`.`blog_post_id` in (1, 2, 3, 4, 6, 7, 8, 9, 10)
-        $posts = BlogPost::with('comments')->get();
-
-        foreach ($posts as $post) {
-            foreach ($post->comments as $comment) {
-                //query is done
-                echo $comment->content;
-            }
-        }
-        //endLazyload
-
-        dd(DB::getQueryLog());
-
-
-        return view('posts.index', ['posts' => $posts]);
+        return view('posts.index', ['posts' => BlogPost::all()]);
     }
 
     /**
