@@ -17,4 +17,8 @@ class BlogPost extends Model
 
     //properties, which can be assigned during mass assignment
     protected $fillable = ['title', 'content'];
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
 }
