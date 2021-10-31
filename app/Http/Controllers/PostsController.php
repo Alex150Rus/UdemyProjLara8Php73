@@ -19,8 +19,10 @@ class PostsController extends Controller
     {
         DB::connection()->enableQueryLog();
 
-        //LazyLoad query qty = 1 + qty Of posts
-        $posts = BlogPost::all();
+        //Eager Loading query qty = 2:
+        //select * from `blog_posts`
+        //select * from `comments` where `comments`.`blog_post_id` in (1, 2, 3, 4, 6, 7, 8, 9, 10)
+        $posts = BlogPost::with('comments')->get();
 
         foreach ($posts as $post) {
             foreach ($post->comments as $comment) {
