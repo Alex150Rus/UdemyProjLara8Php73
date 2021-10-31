@@ -1,23 +1,23 @@
+<?php
+    /**
+     * @var BlogPost $post
+     */
+
+use App\Models\BlogPost;
+
+?>
 @extends('layouts.app')
 
-@section('title', $post['title'])
+@section('title', $post->title)
 
 @section('content')
-    @if($post['is_new'])
-        <div>A new blog post! Using if</div>
-    @elseif(!$post['is_new'])
-        <div>Blog post is old! Using elseif</div>
+
+    <h1>{{ $post->title }}</h1>
+    <p>{{ $post->content }}</p>
+    {{--  How much time has passed since  --}}
+    <p>Added {{$post->created_at->diffForHumans()}}</p>
+    {{-- now() generates the carbon object with current time --}}
+    @if(now()->diffInMinutes($post->created_at) < 5)
+        <div class="alert alert-info">New!</div>
     @endif
-
-    @unless($post['is_new'])
-        <div>It is an old post using unless (runs if condition is false and no alternatives)</div>
-    @endunless
-
-    <h1>{{ $post['title'] }}</h1>
-    <p>{{ $post['content'] }}</p>
-
-    @isset($post['has_comments'])
-        <div>The post has some comments using isset</div>
-    @endisset
-
 @endsection

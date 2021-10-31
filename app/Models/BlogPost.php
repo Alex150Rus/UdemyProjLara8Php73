@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $title
  * @property string $content
+ * @property string created_at
  */
 class BlogPost extends Model
 {
