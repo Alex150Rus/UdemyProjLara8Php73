@@ -10,6 +10,6 @@ class Profile extends Model
     use HasFactory;
 
     public function author() {
-        $this->belongsTo(Author::class);
+        return $this->belongsTo(Author::class);
     }
 }
