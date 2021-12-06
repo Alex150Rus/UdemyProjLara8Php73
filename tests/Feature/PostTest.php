@@ -68,5 +68,30 @@ class PostTest extends TestCase
         //dd($messages->getMessages());
     }
 
+    public function testUpdateValid() {
+        //Arrange part
+        $post = new BlogPost();
+        $post->title = 'New title';
+        $post->content = 'Content of the blog post';
+        $post->save();
+
+        $this->assertDatabaseHas('blog_posts',  ['title' => 'New title']);
+
+        $params = [
+            'title' => 'A new named title',
+            'content' => 'Content was changed',
+        ];
+
+        $this->put("/posts/{$post->id}", $params)
+            //redirect
+            ->assertStatus(302)
+            ->assertSessionHas('status');
+
+        $this->assertEquals(session('status'), 'Blog post was updated!');
+
+        $this->assertDatabaseMissing('blog_posts',  ['title' => 'New title']);
+        $this->assertDatabaseHas('blog_posts',  $params);
+    }
+
 
 }
