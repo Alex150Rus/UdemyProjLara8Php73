@@ -27,7 +27,7 @@
             @else
                 <a class="p-2 text-dark" href="{{route('logout')}}"
                    onclick="event.preventDefault();document.getElementById('logout-form').submit()">
-                    logout
+                    Logout ({{\Illuminate\Support\Facades\Auth::user()->name}})
                 </a>
                 <form type="hidden" method="POST" id="logout-form" action="{{route('logout')}}">
                     @csrf
