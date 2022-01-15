@@ -37,7 +37,7 @@ class BlogPostFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'title' => 'New title',
-                'content' => 'Content of the blog post'
+                'content' => 'Content of the blog post',
             ];
         });
     }

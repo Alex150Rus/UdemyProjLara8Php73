@@ -17,7 +17,12 @@ class AddUserToBlogPostsTable extends Migration
             //nullable для случая, если в таблице, на которую ссылаемся есть данные
             //тип данных должен строго совпадать с родительским (unsigned не забываем)
             //$table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('user_id');
+
+            if(env('DB_CONNECTION') === 'sqlite_testing') {
+                $table->unsignedBigInteger('user_id')->default(0);
+            } else {
+                $table->unsignedBigInteger('user_id');
+            }
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
