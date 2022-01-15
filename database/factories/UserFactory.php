@@ -44,4 +44,17 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function johnDoe()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'John Doe',
+                'email' => 'john@laravel.test',
+            ];
+        });
+    }
 }
