@@ -44,6 +44,15 @@ class PostsController extends Controller
     public function store(StorePost $request)
     {
         //if errors, then redirects to the page where errors occured and stop code execution
+
+        $hasFile = $request->hasFile('thumbnail');
+
+        if($hasFile) {
+            $file = $request->file('thumbnail');
+            $file->store('thumbnails');
+            dd();
+        }
+
         $validated= $request->validated();
         $post = BlogPost::create($validated);
 //        $post = new BlogPost();
