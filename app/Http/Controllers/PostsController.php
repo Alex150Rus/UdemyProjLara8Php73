@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Models\BlogPost;
+use App\Models\Image;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -49,45 +50,14 @@ class PostsController extends Controller
         $validated['user_id'] = $request->user()->id;
         $post = BlogPost::create($validated);
 
-        $hasFile = $request->hasFile('thumbnail');
-
-        if($hasFile) {
-            $file = $request->file('thumbnail');
-
-            //short cut for using Storage facade
-            //$file->store('thumbnails');
-            //or using Storage facade
-            //Storage::disk('public')->put('thumbnails', $file);
-
-            //using own fileName. Using public disk
-            $name1 = $file->storeAs('thumbnails', $post->id . '.' . $file->guessExtension());
-            //or
-            //Storage::putFileAs('thumbnails', $file, $post->id . '.' . $file->guessExtension());
-            //or using local disk
-            $name2 = Storage::disk('local')
-                ->putFileAs('thumbnails', $file, $post->id . '.' . $file->guessExtension());
-
-            dump(Storage::url($name1));
-            dump(Storage::disk('local')->url($name2));
+        if($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+            $post->image()->save(
+                Image::create([
+                    'path' => $path,
+                ])
+            );
         }
-
-        die();
-
-//        $post = new BlogPost();
-//        $post->title =  $validated['title'];
-//        $post->content =  $validated['content'];
-//        $post->save();
-
-        //would create a new model instance, fill all properties from input, and try immediately save the model to db.
-        //We do not need call save();
-        //$post2 = BlogPost::create();
-
-        //will create Model, fill the properties, but it would not try to save model to the db. We need to save() when
-        //ready. Use it when the model hase related Model which is not exists yet or we don't have values for all needed
-        //properties yet
-        //$post3 =BlogPost::make();
-
-        //$post->fill([]);
 
         $request->session()->flash('status', 'The blog post was created');
 

@@ -27,6 +27,10 @@ class BlogPost extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function image() {
+        return $this->hasOne(Image::class);
+    }
+
     public static function boot()
     {
         parent::boot();
