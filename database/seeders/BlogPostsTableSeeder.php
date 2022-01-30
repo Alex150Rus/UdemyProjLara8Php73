@@ -15,9 +15,10 @@ class BlogPostsTableSeeder extends Seeder
      */
     public function run()
     {
+        $blogPostsCount = (int)$this->command->ask('How many blog posts would you like?', 50);
         $users= User::all();
         //make создаёт инстансы, но не сохраняет
-        BlogPost::factory()->count(50)->make()->each(function ($post) use($users){
+        BlogPost::factory()->count($blogPostsCount)->make()->each(function ($post) use($users){
             $post->user_id = $users->random()->id;
             $post->save();
         });
