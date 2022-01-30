@@ -22,4 +22,15 @@ class BlogPost extends Model
     public function comments() {
         return $this->hasMany(Comment::class);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        //событие удаления и что присходит во время его срабатывания
+        static::deleting(function (BlogPost $blogPost) {
+            $blogPost->comments()->delete();
+        });
+
+    }
 }
