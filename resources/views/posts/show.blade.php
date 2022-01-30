@@ -12,9 +12,22 @@ use App\Models\BlogPost;
 
 @section('content')
 
-    <h1>{{ $post->title }}</h1>
+    @if($post->image)
+        <div style="background-image: url('{{$post->image->url()}}'); min-height: 500px; color: white;
+            text-align: center; background-attachment: fixed">
+            <h1 style="padding-top: 100px; text-shadow: 1px 2px #000">
+    @else
+        <h1>
+    @endif
+    {{ $post->title }}
+        @if($post->image)
+            </h1>
+        </div>
+        @else
+        </h1>
+        @endif
     <p>{{ $post->content }}</p>
-    <img src="{{$post->image->url()}}" alt="">
+{{--    <img src="{{$post->image->url()}}" alt="">--}}
     {{--  How much time has passed since  --}}
     <p>Added {{$post->created_at->diffForHumans()}}</p>
     {{-- now() generates the carbon object with current time --}}
