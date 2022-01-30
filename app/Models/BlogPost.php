@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $title
  * @property string $content
+ * @property int user_id
  * @property Carbon created_at
  */
 class BlogPost extends Model
@@ -20,7 +21,7 @@ class BlogPost extends Model
     use SoftDeletes;
 
     //properties, which can be assigned during mass assignment
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'user_id'];
 
     public function comments() {
         return $this->hasMany(Comment::class);

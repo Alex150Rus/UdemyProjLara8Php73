@@ -45,8 +45,8 @@ class PostsController extends Controller
     public function store(StorePost $request)
     {
         //if errors, then redirects to the page where errors occured and stop code execution
-
         $validated= $request->validated();
+        $validated['user_id'] = $request->user()->id;
         $post = BlogPost::create($validated);
 
         $hasFile = $request->hasFile('thumbnail');
@@ -59,13 +59,19 @@ class PostsController extends Controller
             //or using Storage facade
             //Storage::disk('public')->put('thumbnails', $file);
 
-            //using own fileName
-            $file->storeAs('thumbnails', $post->id . '.' . $file->guessExtension());
+            //using own fileName. Using public disk
+            $name1 = $file->storeAs('thumbnails', $post->id . '.' . $file->guessExtension());
             //or
-            Storage::putFileAs('thumbnails', $file, $post->id . '.' . $file->guessExtension());
-            //or
-            Storage::disk('public')->putFileAs('thumbnails', $file, $post->id . '.' . $file->guessExtension());
+            //Storage::putFileAs('thumbnails', $file, $post->id . '.' . $file->guessExtension());
+            //or using local disk
+            $name2 = Storage::disk('local')
+                ->putFileAs('thumbnails', $file, $post->id . '.' . $file->guessExtension());
+
+            dump(Storage::url($name1));
+            dump(Storage::disk('local')->url($name2));
         }
+
+        die();
 
 //        $post = new BlogPost();
 //        $post->title =  $validated['title'];
