@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -15,6 +16,8 @@ use Illuminate\Support\Carbon;
 class BlogPost extends Model
 {
     use HasFactory;
+
+    use SoftDeletes;
 
     //properties, which can be assigned during mass assignment
     protected $fillable = ['title', 'content'];
