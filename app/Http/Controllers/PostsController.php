@@ -7,6 +7,7 @@ use App\Models\BlogPost;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Storage;
 
 
 class PostsController extends Controller
@@ -45,16 +46,27 @@ class PostsController extends Controller
     {
         //if errors, then redirects to the page where errors occured and stop code execution
 
+        $validated= $request->validated();
+        $post = BlogPost::create($validated);
+
         $hasFile = $request->hasFile('thumbnail');
 
         if($hasFile) {
             $file = $request->file('thumbnail');
-            $file->store('thumbnails');
-            dd();
+
+            //short cut for using Storage facade
+            //$file->store('thumbnails');
+            //or using Storage facade
+            //Storage::disk('public')->put('thumbnails', $file);
+
+            //using own fileName
+            $file->storeAs('thumbnails', $post->id . '.' . $file->guessExtension());
+            //or
+            Storage::putFileAs('thumbnails', $file, $post->id . '.' . $file->guessExtension());
+            //or
+            Storage::disk('public')->putFileAs('thumbnails', $file, $post->id . '.' . $file->guessExtension());
         }
 
-        $validated= $request->validated();
-        $post = BlogPost::create($validated);
 //        $post = new BlogPost();
 //        $post->title =  $validated['title'];
 //        $post->content =  $validated['content'];
