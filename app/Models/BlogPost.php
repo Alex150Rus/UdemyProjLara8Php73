@@ -31,9 +31,13 @@ class BlogPost extends Model
         parent::boot();
 
         //событие удаления и что присходит во время его срабатывания
-//        static::deleting(function (BlogPost $blogPost) {
-//            $blogPost->comments()->delete();
-//        });
+        static::deleting(function (BlogPost $blogPost) {
+            $blogPost->comments()->delete();
+        });
+
+        static::restoring(function (BlogPost $blogPost){
+            $blogPost->comments()->restore();
+        });
 
     }
 }
