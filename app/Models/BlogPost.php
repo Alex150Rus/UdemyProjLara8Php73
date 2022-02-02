@@ -31,6 +31,10 @@ class BlogPost extends Model
         return $this->hasOne(Image::class);
     }
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
     public static function boot()
     {
         parent::boot();

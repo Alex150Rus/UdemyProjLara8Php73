@@ -8,6 +8,7 @@ use App\Models\Image;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -85,7 +86,11 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        return view('posts.edit', ['post' => BlogPost::findOrFail($id)]);
+        $post = BlogPost::findOrFail($id);
+        if (Gate::denies('update-post', $post)) {
+            abort(403, "You can't edit this blog post");
+        }
+        return view('posts.edit', ['post' => $post]);
     }
 
     /**
@@ -98,6 +103,11 @@ class PostsController extends Controller
     public function update(StorePost $request, $id)
     {
         $post = BlogPost::findOrFail($id);
+
+        if (Gate::denies('update-post', $post)) {
+            abort(403, "You can't edit this blog post");
+        }
+
         $validated = $request->validated();
         $post->fill($validated);
 
