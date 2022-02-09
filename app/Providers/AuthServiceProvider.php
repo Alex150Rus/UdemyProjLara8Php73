@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Policies\BlogPostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -25,24 +26,30 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('update-post', function($user, $blogPost){
-            return $user->id === $blogPost->user_id;
-        });
+//        Gate::define('update-post', function($user, $blogPost){
+//            return $user->id === $blogPost->user_id;
+//        });
+//
+//        Gate::define('delete-post', function($user, $blogPost){
+//            return $user->id === $blogPost->user_id;
+//        });
+//
 
-        Gate::define('delete-post', function($user, $blogPost){
-            return $user->id === $blogPost->user_id;
-        });
+//        Gate::define('posts.update', 'App\Policies\BlogPostPolicy@update');
+//        Gate::define('posts.delete', 'App\Policies\BlogPostPolicy@delete');
+        //or
+        Gate::resource('posts', BlogPostPolicy::class);
 
-        //will be called before other Gate checks. And should always return true
-        Gate::before(function($user, $ability){
-            if($user->is_admin) {
-                return true;
-            }
-        });
+//        //will be called before other Gate checks. And should always return true
+//        Gate::before(function($user, $ability){
+//            if($user->is_admin) {
+//                return true;
+//            }
+//        });
 
 //        //Overriding ability
 //        Gate::before(function($user, $ability){
-//            if($user->is_admin && $ability === 'delete-post') {
+//            if($user->is_admin && $ability === 'posts.update') {
 //                return true;
 //            }
 //        });
