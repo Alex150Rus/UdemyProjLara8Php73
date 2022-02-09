@@ -11,7 +11,15 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
-
+//how Laravel knows which policy to use, if we don't tell the ability name? It uses method name map
+//[
+//    'show' => 'view',
+//    'create' => 'create',
+//    'store' => 'create',
+//    'edit' => 'update',
+//    'update' => 'update',
+//    'destroy' => 'delete',
+//]
 class PostsController extends Controller
 {
     public function __construct() {
@@ -91,8 +99,10 @@ class PostsController extends Controller
 //            abort(403, "You can't edit this blog post");
 //        }
         //instead of gate
-        $this->authorize('posts.update', $post);
-
+       //$this->authorize('posts.update', $post);
+        //$this->authorize('update', $post);
+        //works even without ability
+        $this->authorize($post);
 
         return view('posts.edit', ['post' => $post]);
     }
@@ -112,7 +122,8 @@ class PostsController extends Controller
 //            abort(403, "You can't edit this blog post");
 //        }
         //instead of gate
-        $this->authorize('posts.delete', $post);
+        //$this->authorize('posts.update', $post);
+        $this->authorize('update', $post);
 
         $validated = $request->validated();
         $post->fill($validated);
@@ -153,7 +164,8 @@ class PostsController extends Controller
 //            abort(403, "You can't delete this blog post");
 //        }
         //instead of gate
-        $this->authorize('posts.delete', $post);
+        //$this->authorize('posts.delete', $post);
+        $this->authorize('delete', $post);
 
         $post->delete();
 

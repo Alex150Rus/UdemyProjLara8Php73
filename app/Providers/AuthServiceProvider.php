@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\BlogPost;
 use App\Policies\BlogPostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -15,6 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        BlogPost::class => BlogPostPolicy::class
     ];
 
     /**
@@ -38,7 +40,7 @@ class AuthServiceProvider extends ServiceProvider
 //        Gate::define('posts.update', 'App\Policies\BlogPostPolicy@update');
 //        Gate::define('posts.delete', 'App\Policies\BlogPostPolicy@delete');
         //or
-        Gate::resource('posts', BlogPostPolicy::class);
+//        Gate::resource('posts', BlogPostPolicy::class);
 
 //        //will be called before other Gate checks. And should always return true
 //        Gate::before(function($user, $ability){
