@@ -49,12 +49,12 @@ class AuthServiceProvider extends ServiceProvider
 //            }
 //        });
 
-//        //Overriding ability
-//        Gate::before(function($user, $ability){
-//            if($user->is_admin && $ability === 'posts.update') {
-//                return true;
-//            }
-//        });
+        //Overriding ability
+        Gate::before(function($user, $ability){
+            if($user->is_admin && in_array($ability, ['delete', 'update'])) {
+                return true;
+            }
+        });
 //
 //        //Overriding abilities
 //        Gate::before(function($user, $ability){
