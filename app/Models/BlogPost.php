@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -38,6 +39,8 @@ class BlogPost extends Model
     public static function boot()
     {
         parent::boot();
+
+        static::addGlobalScope(new LatestScope());
 
         //событие удаления и что присходит во время его срабатывания
         static::deleting(function (BlogPost $blogPost) {
