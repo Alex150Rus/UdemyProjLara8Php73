@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\DeletedAdminScope;
 use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,9 +52,10 @@ class BlogPost extends Model
 
     public static function boot()
     {
-        parent::boot();
-
         //static::addGlobalScope(new LatestScope());
+        static::addGlobalScope(new DeletedAdminScope);
+
+        parent::boot();
 
         //событие удаления и что присходит во время его срабатывания
         static::deleting(function (BlogPost $blogPost) {
