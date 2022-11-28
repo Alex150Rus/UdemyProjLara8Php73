@@ -32,7 +32,9 @@ use App\Models\BlogPost;
     <p>Added {{$post->created_at->diffForHumans()}}</p>
     {{-- now() generates the carbon object with current time --}}
     @if(now()->diffInMinutes($post->created_at) < 5)
-        <div class="alert alert-info">New!</div>
+        @component('badge', ['type' => 'primary'])
+            New!
+        @endcomponent
     @endif
     <h4>Comments</h4>
     @forelse($post->comments as $comment)
