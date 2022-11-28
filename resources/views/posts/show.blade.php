@@ -20,6 +20,11 @@ use App\Models\BlogPost;
         <h1>
     @endif
     {{ $post->title }}
+
+    @badge(['show' => now()->diffInMinutes($post->created_at) < 5])
+    New!
+    @endbadge
+
         @if($post->image)
             </h1>
         </div>
@@ -31,11 +36,6 @@ use App\Models\BlogPost;
     {{--  How much time has passed since  --}}
     <p>Added {{$post->created_at->diffForHumans()}}</p>
     {{-- now() generates the carbon object with current time --}}
-    @if(now()->diffInMinutes($post->created_at) < 5)
-        @badge(['type' => 'primary'])
-            New!
-        @endbadge
-    @endif
     <h4>Comments</h4>
     @forelse($post->comments as $comment)
         <p>{{$comment->content}},</p>
