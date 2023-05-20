@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 //how Laravel knows which policy to use, if we don't tell the ability name? It uses method name map
@@ -35,13 +35,25 @@ class PostsController extends Controller
      */
     public function index()
     {
+        $mostCommented = Cache::remember('mostCommented', now()->addSeconds(30), function () {
+            return BlogPost::mostCommented()->take(5)->get();
+        });
+
+        $mostActiveUsers = Cache::remember('mostActive', 60, function () {
+            return User::withMostBlogPosts()->take(5)->get();
+        });
+
+        $mostActiveUsersLastMonth = Cache::remember('mostActiveLastMonth', 60, function () {
+            return User::withMostBlogPostsLastMonth()->take(5)->get();
+        });
+
         return view(
             'posts.index',
             [
                 'posts' => BlogPost::latest()->withCount('comments')->with('user')->get(),
-                'mostCommented' => BlogPost::mostCommented()->take(5)->get(),
-                'mostActive' => User::withMostBlogPosts()->take(5)->get(),
-                'mostActiveLastMonth' => User::withMostBlogPostsLastMonth()->take(5)->get(),
+                'mostCommented' => $mostCommented,
+                'mostActive' => $mostActiveUsers,
+                'mostActiveLastMonth' => $mostActiveUsersLastMonth,
             ]
         );
     }
