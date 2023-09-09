@@ -9,3 +9,6 @@ Cache::get('key') : null|string
 Cache::get('key2', 'default value') : 'default value'  
 Cache::increment('counter');  
 Cache::decrement();  
+
+### Model
+php artisan make:model Tag
