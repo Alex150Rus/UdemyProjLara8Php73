@@ -40,6 +40,8 @@ use App\Models\BlogPost;
     Updated
     @endupdated
 
+    <p>Currently read by {{$counter}} people</p>
+
     <h4>Comments</h4>
     @forelse($post->comments as $comment)
         <p>{{$comment->content}},</p>

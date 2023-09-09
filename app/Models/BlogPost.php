@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Scopes\DeletedAdminScope;
-use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
