@@ -1,0 +1,13 @@
+$blogPost->tags()->attach($tag1);
+$blogPost->tags()->attach([$tag1->id, $tag2->id]);
+
+//saves relation if it hasn't been in the table yet
+$blogPost->tags()->syncWithoutDetaching([$tag1->id, $tag2->id])
+
+//adds only one relation and removes other, added earlier ($tag2)
+$blogPost->tags()->sync([$tag1->id]);
+
+$blogPost->tags()->detach($tag1);
+//removes all associations
+$blogPost->tags()->detach($tag1);
+$blogPost->tags()->sync([]);
