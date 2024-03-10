@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 //how Laravel knows which policy to use, if we don't tell the ability name? It uses method name map
@@ -38,10 +38,7 @@ class PostsController extends Controller
         return view(
             'posts.index',
             [
-                'posts' => BlogPost::latest()->withCount('comments')->get(),
-                'mostCommented' => BlogPost::mostCommented()->take(5)->get(),
-                'mostActive' => User::withMostBlogPosts()->take(5)->get(),
-                'mostActiveLastMonth' => User::withMostBlogPostsLastMonth()->take(5)->get(),
+                'posts' => BlogPost::latest()->withCount('comments')->with('user')->with('tags')->get(),
             ]
         );
     }
@@ -99,9 +96,52 @@ class PostsController extends Controller
 //                return $query->latest();
 //            }])->findOrFail($id)]
 //        );
+
+        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-$id", 60, function () use($id) {
+            return BlogPost::with('comments')->with('tags')->with('user')->findOrFail($id);
+        });
+
+        //get the current user session
+        $sessionId =  session()->getId();
+        $counterKey = "blog-post-{$id}-counter";
+        $usersKey = "blog-post-{$id}-users";
+
+        $users = Cache::tags(['blog-post'])->get($usersKey, []);
+        $usersUpdate = [];
+        $difference = 0;
+        $now = now();
+
+        foreach ($users as $session => $lastVisitTime) {
+            if($now->diffInMinutes($lastVisitTime) >= 1) {
+                $difference--;
+            } else {
+                $usersUpdate[$session] = $lastVisitTime;
+            }
+        }
+
+        if(
+            !array_key_exists($sessionId, $users)
+            || $now->diffInMinutes($users[$sessionId]) >= 1
+        ) {
+            $difference++;
+        }
+
+        $usersUpdate[$sessionId] = $now;
+        Cache::tags(['blog-post'])->forever($usersKey, $usersUpdate);
+
+        if(!Cache::tags(['blog-post'])->has($counterKey)) {
+            Cache::tags(['blog-post'])->forever($counterKey, 1);
+        } else {
+            Cache::tags(['blog-post'])->increment($counterKey, $difference);
+        }
+        $counter = Cache::tags(['blog-post'])->get($counterKey);
+
         return view(
             'posts.show',
-            ['post' => BlogPost::with('comments')->findOrFail($id)]
+            [
+                'post' => $blogPost,
+                'counter' => $counter,
+            ]
         );
     }
 
