@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\PostTagController;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,8 @@ $posts = [
 
 Route::resource('posts', PostsController::class);
 Route::get('/posts/tag/{tag}', [PostTagController::class, 'index'])->name('posts.tags.index');
+
+Route::resource('posts.comments', PostCommentController::class)->only(['store']);
 
 Route::prefix('/fun')->name('fun.')->group(function() use ($posts){
 

@@ -64,6 +64,7 @@ class BlogPost extends Model
         //событие удаления и что присходит во время его срабатывания
         static::deleting(function (BlogPost $blogPost) {
             $blogPost->comments()->delete();
+            Cache::tags(['blog-post'])->forget("blog-post-$blogPost->id");
         });
 
         static::restoring(function (BlogPost $blogPost){
@@ -71,7 +72,7 @@ class BlogPost extends Model
         });
 
         static::updating(function (BlogPost $blogPost) {
-            Cache::forget("blog-post-$blogPost->id");
+            Cache::tags(['blog-post'])->forget("blog-post-$blogPost->id");
         });
 
     }
