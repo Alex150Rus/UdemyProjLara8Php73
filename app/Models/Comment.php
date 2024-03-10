@@ -6,6 +6,7 @@ use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
@@ -17,6 +18,11 @@ class Comment extends Model
     //blog_post_id as in migration
     public function blogPost() {
         return $this->belongsTo(BlogPost::class);
+    }
+
+    public function user(): belongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function scopeLatest(Builder $query)
