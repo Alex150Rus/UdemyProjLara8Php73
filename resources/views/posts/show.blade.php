@@ -46,6 +46,9 @@ use App\Models\BlogPost;
             <p>Currently read by {{$counter}} people</p>
 
             <h4>Comments</h4>
+
+            @include('comments.partials.form')
+
             @forelse($post->comments as $comment)
                 <p>{{$comment->content}},</p>
                 @updated(['date' => $comment->created_at, 'name' => $comment->user->name])
